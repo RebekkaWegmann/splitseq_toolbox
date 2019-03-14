@@ -12,5 +12,5 @@ This toolbox is provided by the [Snijder lab](https://www.snijderlab.org) at ETH
 If you have questions or find a bug, son't hesitate to contact Rebekka Wegmann: [wegmann@imsb.biol.ethz.ch](mailto:wegmanre@imsb.biol.ethz.ch)
 
 ## Notes and caution
-This tool comes with no warrantry and accurate function is not guaranteed. It laso does not exactly recapitulate the approach described in the SPLiT-seq paper.
+This tool comes with no warranty and accurate function is not guaranteed. It laso does not exactly recapitulate the approach described in the SPLiT-seq paper.
 Currently, we use only the poly-T RT primers, therefore **this tool does not collapse the random hexamer and polyT barcodes!**
