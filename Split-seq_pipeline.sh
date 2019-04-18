@@ -138,6 +138,7 @@ reference_basename=$(basename $reference $reference_suffix)
 refflat=$(dirname $reference)/$reference_basename.refFlat
 gene_intervals=$(dirname $reference)/$reference_basename.genes.intervals
 exon_intervals=$(dirname $reference)/$reference_basename.exon.intervals
+rRNA_intervals=$(dirname $reference)/$reference_basename.rRNA.intervals
 picard_jar=${dropseq_root}/3rdParty/picard/picard.jar
 
 unmapped_bam=$1
@@ -272,6 +273,6 @@ dge_with_introns="${dropseq_root}/DigitalExpression I=${outdir}/gene_function_ta
 $echo_prefix $dge_with_introns
 
 # collect RNAseq metrics with PICARD
-rnaseq_metrics="java -jar ${picard_jar} CollectRnaSeqMetrics I=${outdir}/gene_function_tagged.bam O=${outdir}/rnaseq_metrics.RNA_Metrics REF_FLAT=${refflat} STRAND=FIRST_READ_TRANSCRIPTION_STRAND RIBOSOMAL_INTERVALS=${HOME}/nas_1/Data/Rebekka/Reference_Sequences/HSapiens_GRCh38/Seq_with_Annot/GRCh38_rRNA.interval_list"
+rnaseq_metrics="java -jar ${picard_jar} CollectRnaSeqMetrics I=${outdir}/gene_function_tagged.bam O=${outdir}/rnaseq_metrics.RNA_Metrics REF_FLAT=${refflat} STRAND=FIRST_READ_TRANSCRIPTION_STRAND RIBOSOMAL_INTERVALS=${rRNA_intervals}"
 $echo_prefix $rnaseq_metrics
 
