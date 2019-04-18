@@ -133,8 +133,8 @@ if [[ ! -d $tmpdir ]]
 then mkdir $tmpdir
 fi
 
-
-reference_basename=$(basename $reference .fa)
+reference_suffix=$(echo $reference | sed s/.*\\./\\./) #reference can be .fa or .fasta
+reference_basename=$(basename $reference $reference_suffix)
 refflat=$(dirname $reference)/$reference_basename.refFlat
 gene_intervals=$(dirname $reference)/$reference_basename.genes.intervals
 exon_intervals=$(dirname $reference)/$reference_basename.exon.intervals
