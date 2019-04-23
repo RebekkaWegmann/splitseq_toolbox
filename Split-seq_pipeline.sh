@@ -174,9 +174,9 @@ SEQUENCE=AAGCAGTGGTATCAACGCAGAGTGAATGGG MISMATCHES=0 NUM_BASES=5"
 trim_poly_a="${dropseq_root}/PolyATrimmer OUTPUT_SUMMARY=${outdir}/polyA_trimming_report.txt MISMATCHES=0 NUM_BASES=6"
 
 ## Stage 3: Filter barcodes
-# The lower option collapses barcodes that are in the same well. Uncomment if that's what you want.
-filter_barcodes="python ${splitseq_root}/src/Splitseq_barcode_filtering.py -d ${outdir} -o ${tagged_unmapped_bam} -n ${estimated_num_cells} -b ${barcode_dir}"
-#filter_barcodes="python ${splitseq_root}/src/Splitseq_barcode_filtering.py -d ${outdir} -o ${tagged_unmapped_bam} -n ${estimated_num_cells} -b ${barcode_dir} --collapse_wells"
+# The lower option collapses barcodes that are in the same well, teh upper one trats each barcode as its own. Uncomment the one you want.
+# filter_barcodes="python ${splitseq_root}/src/Splitseq_barcode_filtering.py -d ${outdir} -o ${tagged_unmapped_bam} -n ${estimated_num_cells} -b ${barcode_dir}"
+filter_barcodes="python ${splitseq_root}/src/Splitseq_barcode_filtering.py -d ${outdir} -o ${tagged_unmapped_bam} -n ${estimated_num_cells} -b ${barcode_dir} --collapse_wells"
 
 # Stage 4: alignment
 sam_to_fastq="java -Xmx500m -jar ${picard_jar} SamToFastq INPUT=${tagged_unmapped_bam}"
