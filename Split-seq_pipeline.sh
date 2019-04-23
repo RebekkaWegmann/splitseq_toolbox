@@ -174,7 +174,9 @@ SEQUENCE=AAGCAGTGGTATCAACGCAGAGTGAATGGG MISMATCHES=0 NUM_BASES=5"
 trim_poly_a="${dropseq_root}/PolyATrimmer OUTPUT_SUMMARY=${outdir}/polyA_trimming_report.txt MISMATCHES=0 NUM_BASES=6"
 
 ## Stage 3: Filter barcodes
+# The lower option collapses barcodes that are in the same well. Uncomment if that's what you want.
 filter_barcodes="python ${splitseq_root}/src/Splitseq_barcode_filtering.py -d ${outdir} -o ${tagged_unmapped_bam} -n ${estimated_num_cells} -b ${barcode_dir}"
+#filter_barcodes="python ${splitseq_root}/src/Splitseq_barcode_filtering.py -d ${outdir} -o ${tagged_unmapped_bam} -n ${estimated_num_cells} -b ${barcode_dir} --collapse_wells"
 
 # Stage 4: alignment
 sam_to_fastq="java -Xmx500m -jar ${picard_jar} SamToFastq INPUT=${tagged_unmapped_bam}"
@@ -265,11 +267,11 @@ fi
 ## Stage 6: create DGE matrix
 
 # counting exonic reads only
-dge="${dropseq_root}/DigitalExpression I=${outdir}/gene_function_tagged.bam O=${outdir}/DGE_matrix.txt.gz READ_MQ=10 EDIT_DISTANCE=1 MIN_NUM_GENES_PER_CELL=10"
+dge="${dropseq_root}/DigitalExpression I=${outdir}/gene_function_tagged.bam O=${outdir}/DGE_matrix.txt.gz READ_MQ=10 EDIT_DISTANCE=1 MIN_NUM_GENES_PER_CELL=100"
 $echo_prefix $dge
 
 # counting both intronic and exonic reads
-dge_with_introns="${dropseq_root}/DigitalExpression I=${outdir}/gene_function_tagged.bam O=${outdir}/DGE_matrix_with_introns.txt.gz READ_MQ=10 EDIT_DISTANCE=1 MIN_NUM_GENES_PER_CELL=10 LOCUS_FUNCTION_LIST=INTRONIC"
+dge_with_introns="${dropseq_root}/DigitalExpression I=${outdir}/gene_function_tagged.bam O=${outdir}/DGE_matrix_with_introns.txt.gz READ_MQ=10 EDIT_DISTANCE=1 MIN_NUM_GENES_PER_CELL=100 LOCUS_FUNCTION_LIST=INTRONIC"
 $echo_prefix $dge_with_introns
 
 # collect RNAseq metrics with PICARD
