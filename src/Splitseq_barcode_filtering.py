@@ -211,11 +211,11 @@ for entry in infile.fetch(until_eof=True):
                 keep=False
     if keep:
         if collapse_wells:
-            well = bc1.WellPosition.values[bc1.Barcode.values==xd]
+            well = bc1.WellPosition.values[bc1.Barcode.values==xd][0]
             xc = well+xe+xf
         else:
             xc = xd+xe+xf
-        bc_type = bc1.Type.values[bc1.Barcode.values==xd]
+        bc_type = bc1.Type.values[bc1.Barcode.values==xd][0]
         entry.set_tag('XC',xc)
         entry.set_tag('XB',bc_type)
         outfile.write(entry)
