@@ -78,6 +78,7 @@ parser.add_argument("-o" "--output_bam", action="store", dest="output_bam", defa
 parser.add_argument("-n" "--est_num_cells", action="store", dest="est_num_cells", default=2500, help="Estimated number of cells. Defaults to 2500.",type=int)
 parser.add_argument("-d" "--out_dir", action="store", dest="out_dir", default=".", help="Directory to store logfiles and output plots. Defaults to the current directory.")
 parser.add_argument("-b" "--bc_dir", action="store", dest="bc_dir", default=".", help="Directory where the expected barcode files are stored. Defaults to the directory this script is in.")
+parser.add_argument("--collapse_wells", action="store_true", dest="collapse_wells", help="Collapse barcodes from the same well. Instead of the actual barcode sequence, the cellular barcode will contain the well position. Turn this on if you used polyT and random hexamer primers with different barcodes in the same well.")
 parser.add_argument("--debug_flag",action="store_true",help="Turn on debug flag. This will produce some additional output which might be helpful.")
 parser.add_argument("--store_discarded",action="store_true",help="Store names of discarded reads?")
 
@@ -91,6 +92,7 @@ output_bam = args.output_bam
 est_num_cells = args.est_num_cells
 out_dir = args.out_dir
 bc_dir = args.bc_dir
+collapse_wells = args.collapse_wells
 
 if bc_dir==".":
     bc_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
@@ -102,6 +104,8 @@ print('Ouput bam: %s' % output_bam, file = open(os.path.join(out_dir,'barcode_fi
 print('Estimated number of cells: %d' % est_num_cells, file = open(os.path.join(out_dir,'barcode_filtering_log.txt'),'a'))
 print('Output directory: %s' % out_dir, file = open(os.path.join(out_dir,'barcode_filtering_log.txt'),'a'))
 print('Barcode directory: %s' % bc_dir, file = open(os.path.join(out_dir,'barcode_filtering_log.txt'),'a'))
+if collapse_wells:
+    print('Barcodes from the same well will be collapsed.', file = open(os.path.join(out_dir,'barcode_filtering_log.txt'),'a'))
 
 if store_discarded:
     if os.path.isfile(os.path.join(out_dir,'discarded_reads.txt')):
@@ -206,8 +210,14 @@ for entry in infile.fetch(until_eof=True):
             else:
                 keep=False
     if keep:
-        xc = xd+xe+xf
+        if collapse_wells:
+            well = bc1.WellPosition.values[bc1.Barcode.values==xd]
+            xc = well+xe+xf
+        else:
+            xc = xd+xe+xf
+        bc_type = bc1.Type.values[bc1.Barcode.values==xd]
         entry.set_tag('XC',xc)
+        entry.set_tag('XB',bc_type)
         outfile.write(entry)
         if n8<est_num_cells*100:
             all_bcs[n8]=xc
