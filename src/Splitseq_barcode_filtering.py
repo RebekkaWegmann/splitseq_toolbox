@@ -212,7 +212,7 @@ for entry in infile.fetch(until_eof=True):
     if keep:
         if collapse_wells:
             well = bc1.WellPosition.values[bc1.Barcode.values==xd][0]
-            xc = well+xe+xf
+            xc = well+'_'+xe+xf
         else:
             xc = xd+xe+xf
         bc_type = bc1.Type.values[bc1.Barcode.values==xd][0]
