@@ -162,6 +162,9 @@ BASE_RANGE=49-56 BASE_QUALITY=10 BARCODED_READ=2 DISCARD_READ=false TAG_NAME=XE 
 tag_cells_3="${dropseq_root}/TagBamWithReadSequenceExtended SUMMARY=${outdir}/unaligned_tagged_Cellular_3.bam_summary.txt \
 BASE_RANGE=11-18 BASE_QUALITY=10 BARCODED_READ=2 DISCARD_READ=true TAG_NAME=XF NUM_BASES_BELOW_QUALITY=1" #setting discard_read=true will make sure read 2 is discarded after the last tagging step, resulting in a tagged, single read bam file
 
+get_primer_type="${dropseq_root}/TagBamWithReadSequenceExtended SUMMARY=${outdir}/unaligned_with_primer_type.bam_summary.txt \
+BASE_RANGE=95-100 BASE_QUALITY=10 BARCODED_READ=2 DISCARD_READ=true TAG_NAME=XF NUM_BASES_BELOW_QUALITY=3"
+
 #discard all reads where any one of the barcode regions has at least 1 base with quality < 10
 filter_bam="${dropseq_root}/FilterBam TAG_REJECT=XQ"
 
@@ -205,6 +208,8 @@ then
        $tag_cells_1 INPUT=/dev/stdin OUTPUT=/dev/stdout COMPRESSION_LEVEL=0 | \
        $tag_cells_2 INPUT=/dev/stdin OUTPUT=/dev/stdout COMPRESSION_LEVEL=0 | \
        $tag_cells_3 INPUT=/dev/stdin OUTPUT=/dev/stdout COMPRESSION_LEVEL=0 | \
+       # the below is only valid if sequenced with 150 PE, should be commented by default
+       $get_primer_type INPUT=/dev/stdin OUTPUT=/dev/stdout COMPRESSION_LEVEL=0 | \
        $filter_bam INPUT=/dev/stdin OUTPUT=/dev/stdout COMPRESSION_LEVEL=0 | \
        $trim_starting_sequence INPUT=/dev/stdin OUTPUT=/dev/stdout COMPRESSION_LEVEL=0 | \
        $trim_poly_a INPUT=/dev/stdin OUTPUT=/dev/stdout | \
