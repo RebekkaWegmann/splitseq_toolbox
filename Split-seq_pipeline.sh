@@ -163,7 +163,7 @@ tag_cells_3="${dropseq_root}/TagBamWithReadSequenceExtended SUMMARY=${outdir}/un
 BASE_RANGE=11-18 BASE_QUALITY=10 BARCODED_READ=2 DISCARD_READ=true TAG_NAME=XF NUM_BASES_BELOW_QUALITY=1" #setting discard_read=true will make sure read 2 is discarded after the last tagging step, resulting in a tagged, single read bam file
 
 get_primer_type="${dropseq_root}/TagBamWithReadSequenceExtended SUMMARY=${outdir}/unaligned_with_primer_type.bam_summary.txt \
-BASE_RANGE=95-100 BASE_QUALITY=10 BARCODED_READ=2 DISCARD_READ=true TAG_NAME=XF NUM_BASES_BELOW_QUALITY=3"
+BASE_RANGE=95-100 BASE_QUALITY=10 BARCODED_READ=2 DISCARD_READ=true TAG_NAME=XR NUM_BASES_BELOW_QUALITY=3"
 
 #discard all reads where any one of the barcode regions has at least 1 base with quality < 10
 filter_bam="${dropseq_root}/FilterBam TAG_REJECT=XQ"
